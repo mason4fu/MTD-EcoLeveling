@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
-  const [rows, setRows] = useState<string[][]>([]);
+  const [rows, setRows] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/data') // Calling your Flask backend
+    fetch('/api/sql-data')
       .then((res) => res.json())
       .then((data) => {
         setRows(data);
@@ -18,18 +18,29 @@ function App() {
       });
   }, []);
 
+  const headers = rows.length > 0 ? Object.keys(rows[0]) : [];
+
   return (
     <div className="App">
-      <h1>📊 GCS Data Table</h1>
+      <h1>📊 SQL Data Table</h1>
       {loading ? (
         <p>Loading data...</p>
+      ) : rows.length === 0 ? (
+        <p>No data available</p>
       ) : (
         <table border={1} cellPadding={6}>
+          <thead>
+            <tr>
+              {headers.map((header) => (
+                <th key={header}>{header}</th>
+              ))}
+            </tr>
+          </thead>
           <tbody>
             {rows.map((row, rowIndex) => (
               <tr key={rowIndex}>
-                {row.map((cell, cellIndex) => (
-                  <td key={cellIndex}>{cell}</td>
+                {headers.map((header) => (
+                  <td key={header}>{row[header]}</td>
                 ))}
               </tr>
             ))}
@@ -41,4 +52,3 @@ function App() {
 }
 
 export default App;
-

@@ -1,31 +1,50 @@
 from flask import Flask, jsonify
-from google.cloud import storage
+import mysql.connector
 import os
 
 app = Flask(__name__)
 
-# Setup Google credentials + project
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\jayma\AppData\Roaming\gcloud\application_default_credentials.json"
-project_id = "mtdecoleveling"
+# MySQL configuration
+db_config = {
+    'host': '34.170.170.60',
+    'user': 'jaymalavia',
+    'password': 'password',
+    'database': 'mtd_eco_leveling',
+    'port': 3306
+}
 
-def read_gcs_csv(bucket_name, file_name):
-    client = storage.Client(project=project_id)
-    bucket = client.bucket(bucket_name)
-    blob = bucket.blob(file_name)
-    content = blob.download_as_text()
-
-    # Convert CSV into a list of rows (each row is a list of values)
-    rows = [line.split(',') for line in content.strip().splitlines()]
-    return rows
-
-@app.route("/api/data")
-def serve_data():
+@app.route("/api/sql-data")
+def get_user_data():
     try:
-        data = read_gcs_csv(bucket_name="mtd_data", file_name="users.csv")
+        print("🔌 Connecting to MySQL...")
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor()
+        print("✅ Connected. Running query...")
+
+        cursor.execute("SELECT * FROM User LIMIT 10;")
+        rows = cursor.fetchall()
+        column_names = [i[0] for i in cursor.description]
+
+        print(f"📦 Retrieved {len(rows)} rows")
+
+        data = [dict(zip(column_names, row)) for row in rows]
+
+        cursor.close()
+        conn.close()
+        print("✅ Connection closed. Returning data...")
+
         return jsonify(data)
+
     except Exception as e:
+        print("❌ Error:", str(e))
         return jsonify({"error": str(e)}), 500
 
+
 if __name__ == "__main__":
-    app.run(debug=True, host="localhost", port=5000)
+    import traceback
+    try:
+        app.run(debug=True, port=5000)
+    except Exception:
+        traceback.print_exc()
+
 
