@@ -7,18 +7,38 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# Node dependencies
+node_modules/
+
+# Build output
+dist/
+dist-ssr/
 *.local
 
-# Editor directories and files
-.vscode/*
+# Environment variables
+.env
+.env.*  # (optional, if you use dotenv for dev/prod separation)
+
+# Python (Flask) stuff
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+instance/
+*.db
+*.sqlite3
+
+# IDEs and editors
+.vscode/
 !.vscode/extensions.json
-.idea
+.idea/
 .DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# Docker
+*.pid
+*.pid.lock
