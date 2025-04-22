@@ -1,5 +1,6 @@
 .planner-container {
   max-width: 1000px;
+  width: 90vw;
   margin: 0 auto;
   padding: 20px;
   text-align: left;
@@ -70,4 +71,21 @@
 .loading {
   text-align: center;
   margin-top: 20px;
+
+}
+
+.trip-item {
+  cursor: pointer;
+  background-color: #040110;
+  padding: 8px;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+.trip-item.selected {
+  background-color: #d0f0fd;
+}
+
+.trip-item:hover {
+  background-color: #e0e0e0;
 }

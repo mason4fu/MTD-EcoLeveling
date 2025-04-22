@@ -42,3 +42,6 @@ instance/
 # Docker
 *.pid
 *.pid.lock
+
+#connection
+/Backend/database/connection.py
