@@ -100,15 +100,24 @@ function TripPlanner() {
   const confirmTrip = async () => {
     if (selectedTripIndex === null) return;
     const trip = trips[selectedTripIndex];
+  
+    const userId = localStorage.getItem('user_id'); //get from storage
+  
+    if (!userId) {
+      alert('Please login first!');
+      return;
+    }
+  
     try {
       const res = await fetch('/api/trips/confirm-trip', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          user_id: 1, // Hardcoded for now
+          user_id: userId,  //Use stored user id/
           trip
         })
       });
+  
       const data = await res.json();
       if (res.ok) {
         alert('Trip confirmed!');
@@ -152,7 +161,7 @@ function TripPlanner() {
   return (
     <div className="planner-container">
       <h1>🚌 Trip Planner</h1>
-
+  
       <div className="controls">
         <div>
           <label>Date:</label><br />
@@ -163,84 +172,81 @@ function TripPlanner() {
           <input type="time" value={time} onChange={(e) => setTime(e.target.value)} />
         </div>
       </div>
-
-      <div className="map-section">
-        <MapContainer center={[40.1106, -88.2073]} zoom={13} style={{ height: "400px", width: "100%" }}>
-          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-          <SearchableMap />
-          {start && <Marker position={[start.lat, start.lng]} icon={new L.Icon.Default()}><Popup>Start</Popup></Marker>}
-          {end && <Marker position={[end.lat, end.lng]} icon={new L.Icon.Default()}><Popup>End</Popup></Marker>}
-          {selectedTripIndex !== null && renderTripPolyline(trips[selectedTripIndex])}
-        </MapContainer>
-
-        <div className="location-info">
-          <div>Start: {start ? `${start.lat.toFixed(5)}, ${start.lng.toFixed(5)}` : 'None'}</div>
-          <button onClick={() => setStart(null)}>Clear Start</button>
-          <div>End: {end ? `${end.lat.toFixed(5)}, ${end.lng.toFixed(5)}` : 'None'}</div>
-          <button onClick={() => setEnd(null)}>Clear End</button>
-        </div>
-      </div>
-
+  
       <div className="buttons">
-      <button onClick={findTrips} disabled={!start || !end || date === '' || time === ''}>Find Trips</button>
-      <button onClick={resetAll}>Refresh</button>
+        <button onClick={findTrips} disabled={!start || !end || date === '' || time === ''}>Find Trips</button>
+        <button onClick={resetAll}>Refresh</button>
+        <button onClick={confirmTrip} disabled={selectedTripIndex === null}>Confirm Trip</button>
       </div>
-
-      {loading ? (
-        <div className="loading"><ClipLoader size={50} color="#123abc" /></div>
-      ) : message ? (
-        <p>{message}</p>
-      ) : trips.length > 0 ? (
-        <div className="trips-list">
-          <h2>Available Trips:</h2>
-          <ul>
-            {trips.map((trip, idx) => (
-              <li
-                key={idx}
-                style={{ marginBottom: '10px' }}
-              >
-                <div
-                  onClick={() => setSelectedTripIndex(idx)}
-                  style={{
-                    cursor: 'pointer',
-                    backgroundColor: selectedTripIndex === idx ? '#d0f0fd' : '#eee',
-                    padding: '8px',
-                    borderRadius: '6px'
-                  }}
-                >
-                  <b>Trip {idx + 1}</b>: {trip.aimedStartTime?.slice(11, 16)} - {trip.aimedEndTime?.slice(11, 16)}
-                </div>
-                <button
-                  style={{ marginTop: '5px' }}
-                  onClick={() => setExpandedTripIndex(expandedTripIndex === idx ? null : idx)}
-                >
-                  {expandedTripIndex === idx ? 'Hide Trip Details' : 'Show Trip Details'}
-                </button>
-                {expandedTripIndex === idx && (
-                  <div style={{ paddingLeft: '15px', marginTop: '10px' }}>
-                    {trip.legs.map((leg: any, legIdx: number) => (
-                      <div key={legIdx} style={{ marginBottom: '8px' }}>
-                        {leg.mode.toLowerCase() === 'bus' ? (
-                          <div>🚌 {leg.fromPlace.name} → {leg.toPlace.name} ({(leg.distance / 1000).toFixed(1)} km)</div>
-                        ) : (
-                          <div>🚶 {leg.fromPlace.name} → {leg.toPlace.name} ({(leg.distance / 1000).toFixed(1)} km)</div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </li>
-            ))}
-          </ul>
-          <button
-            onClick={confirmTrip}
-            disabled={selectedTripIndex === null}
-            style={{ marginTop: '20px' }}
-          >
-            Confirm Selected Trip
-          </button>
+  
+      <div className="content-wrapper">
+        <div className="map-section">
+          <MapContainer center={[40.1106, -88.2073]} zoom={13} style={{ height: "400px", width: "100%" }}>
+            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+            <SearchableMap />
+            {start && <Marker position={[start.lat, start.lng]} icon={new L.Icon.Default()}><Popup>Start</Popup></Marker>}
+            {end && <Marker position={[end.lat, end.lng]} icon={new L.Icon.Default()}><Popup>End</Popup></Marker>}
+            {selectedTripIndex !== null && renderTripPolyline(trips[selectedTripIndex])}
+          </MapContainer>
+  
+          <div className="location-info">
+            <div>Start: {start ? `${start.lat.toFixed(5)}, ${start.lng.toFixed(5)}` : 'None'}</div>
+            <div className="location-buttons">
+              <button onClick={() => setStart(null)}>Clear Start</button>
+              <button onClick={() => setEnd(null)}>Clear End</button>
+            </div>
+            <div>End: {end ? `${end.lat.toFixed(5)}, ${end.lng.toFixed(5)}` : 'None'}</div>
+          </div>
         </div>
-      ) : null}
+  
+        <div className="trips-list">
+          {loading ? (
+            <div className="loading"><ClipLoader size={50} color="#123abc" /></div>
+          ) : message ? (
+            <p>{message}</p>
+          ) : trips.length > 0 ? (
+            <>
+              <h2>Available Trips:</h2>
+              <ul>
+                {trips.map((trip, idx) => (
+                  <li key={idx} className={selectedTripIndex === idx ? 'selected' : ''}>
+                    <div
+                      onClick={() => setSelectedTripIndex(idx)}
+                      style={{
+                        cursor: 'pointer',
+                        backgroundColor: selectedTripIndex === idx ? '#d0f0fd' : '#eee',
+                        padding: '8px',
+                        borderRadius: '6px'
+                      }}
+                    >
+                      <b>Trip {idx + 1}</b>: {trip.aimedStartTime?.slice(11, 16)} - {trip.aimedEndTime?.slice(11, 16)}
+                    </div>
+                    <button
+                      style={{ marginTop: '5px' }}
+                      onClick={() => setExpandedTripIndex(expandedTripIndex === idx ? null : idx)}
+                    >
+                      {expandedTripIndex === idx ? 'Hide Trip Details' : 'Show Trip Details'}
+                    </button>
+                    {expandedTripIndex === idx && (
+                      <div style={{ paddingLeft: '15px', marginTop: '10px' }}>
+                        {trip.legs.map((leg: any, legIdx: number) => (
+                          <div key={legIdx} style={{ marginBottom: '8px' }}>
+                            {leg.mode.toLowerCase() === 'bus' ? (
+                              <div>🚌 {leg.fromPlace.name} → {leg.toPlace.name} ({(leg.distance / 1000).toFixed(1)} km)</div>
+                            ) : (
+                              <div>🚶 {leg.fromPlace.name} → {leg.toPlace.name} ({(leg.distance / 1000).toFixed(1)} km)</div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : null}
+        </div>
+      </div>
     </div>
   );
 }

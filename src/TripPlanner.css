@@ -1,5 +1,5 @@
 .planner-container {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
   text-align: left;
@@ -11,33 +11,36 @@
   margin-bottom: 20px;
 }
 
-.map-section {
-  margin-bottom: 20px;
-}
-
-.location-info {
-  margin-top: 10px;
-}
-
-.location-info button {
-  margin-bottom: 10px;
-  display: block;
-}
-
 .buttons {
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
 }
 
-.loading {
-  text-align: center;
-  margin-top: 20px;
+.content-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  width: 100%;
+  min-height: 400px;
+}
+
+.map-section {
+  flex: 2;
+  min-width: 0;
+}
+
+.trips-list {
+  flex: none;
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
 }
 
 .trips-list ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .trips-list li {
@@ -49,6 +52,22 @@
 }
 
 .trips-list li.selected {
+  color: #0077cc;
   background-color: #d0eaff;
   border-color: #0077cc;
+}
+
+.location-info {
+  margin-top: 10px;
+}
+
+.location-buttons {
+  display: flex;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.loading {
+  text-align: center;
+  margin-top: 20px;
 }
