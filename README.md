@@ -7,7 +7,7 @@
 
 
 
-
+The otp/ folder should be placed at the same directory level as sp25-cs411-team099-BigBallers/.
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

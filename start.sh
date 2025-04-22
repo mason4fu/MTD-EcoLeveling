@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Move into the Backend folder and start Flask server
 echo "🚀 Starting Backend..."
 cd Backend
