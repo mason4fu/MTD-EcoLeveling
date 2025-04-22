@@ -5,9 +5,16 @@
 # to access just the backend run the app.py backend which outputs at localhost:5000/api/data
 # to access the actual app run the app.py with output localhost:5173
 
-
-
 The otp/ folder should be placed at the same directory level as sp25-cs411-team099-BigBallers/.
+
+From the sp25-cs411-team099-BigBallers/ folder:
+'''
+./start.sh
+'''
+This will automatically:
+  • Start the Flask backend (port 5001)
+  • Start the React frontend (Vite dev server)
+  • Start the OTP server using the files inside ../otp/
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
