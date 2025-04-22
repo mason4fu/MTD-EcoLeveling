@@ -120,45 +120,55 @@ def confirm_trip():
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    # Insert into TravelHistory
-    travel_date = trip['aimedStartTime'][:10]   # YYYY-MM-DD for Travel_Date
-    trip_id = trip['aimedStartTime']             # Full ISO datetime string for Trip_ID
+    try:
+        # Set transaction isolation level
+        cursor.execute("SET TRANSACTION ISOLATION LEVEL READ COMMITTED")
+        conn.start_transaction()
 
-    cursor.execute("""
-        INSERT INTO TravelHistory (User_ID, Trip_ID, Travel_Date, Total_Bus_Duration, Total_Bus_Distance, Created_At)
-        VALUES (%s, %s, %s, %s, %s, NOW())
-    """, (
-        user_id,
-        trip_id,
-        travel_date,
-        trip['duration'],
-        trip['distance']
-    ))
-    history_id = cursor.lastrowid
+        # Insert into TravelHistory
+        travel_date = trip['aimedStartTime'][:10]   # YYYY-MM-DD for Travel_Date
+        trip_id = trip['aimedStartTime']             # Full ISO datetime string for Trip_ID
 
-    # Insert each BusLeg (only bus legs)
-    for leg in trip.get('legs', []):
-        if leg['mode'].lower() != 'bus':
-            continue
         cursor.execute("""
-            INSERT INTO BusLeg (History_ID, Mode, StartTime, EndTime, Duration, Distance,
-                                FromPlace, ToPlace, BusRoute, Polyline, Created_At)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())
+            INSERT INTO TravelHistory (User_ID, Trip_ID, Travel_Date, Total_Bus_Duration, Total_Bus_Distance, Created_At)
+            VALUES (%s, %s, %s, %s, %s, NOW())
         """, (
-            history_id,
-            leg['mode'],
-            leg['aimedStartTime'],
-            leg['aimedEndTime'],
-            leg['duration'],
-            leg['distance'],
-            leg['fromPlace']['name'],
-            leg['toPlace']['name'],
-            leg.get('line', {}).get('publicCode', ''),
-            leg.get('pointsOnLink', {}).get('points', '')
+            user_id,
+            trip_id,
+            travel_date,
+            trip['duration'],
+            trip['distance']
         ))
+        history_id = cursor.lastrowid
 
-    conn.commit()
-    cursor.close()
-    conn.close()
+        # Insert each BusLeg (only bus legs)
+        for leg in trip.get('legs', []):
+            if leg['mode'].lower() != 'bus':
+                continue
+            cursor.execute("""
+                INSERT INTO BusLeg (History_ID, Mode, StartTime, EndTime, Duration, Distance,
+                                    FromPlace, ToPlace, BusRoute, Polyline, Created_At)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())
+            """, (
+                history_id,
+                leg['mode'],
+                leg['aimedStartTime'],
+                leg['aimedEndTime'],
+                leg['duration'],
+                leg['distance'],
+                leg['fromPlace']['name'],
+                leg['toPlace']['name'],
+                leg.get('line', {}).get('publicCode', ''),
+                leg.get('pointsOnLink', {}).get('points', '')
+            ))
 
-    return jsonify({"message": "Trip saved successfully!"})
+        conn.commit()
+        return jsonify({"message": "Trip saved successfully!"})
+
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"error": str(e)}), 500
+
+    finally:
+        cursor.close()
+        conn.close()
