@@ -11,6 +11,7 @@ import Navbar from "./Navbar";
 import TripPlanner from "./TripPlanner";
 import Leveling from "./Leveling";
 import LoginPage from "./Login";
+import TravelHistory from "./TravelHistory";
 
 function AppContent() {
   const location = useLocation();
@@ -22,6 +23,7 @@ function AppContent() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/trip-planner" element={<TripPlanner />} />
+        <Route path="/travel-history" element={<TravelHistory />} />
         <Route path="/leveling" element={<Leveling />} />
         <Route path="/" element={<Navigate to="/login" replace />} />
       </Routes>
