@@ -16,6 +16,7 @@ def get_leveling_info():
         cursor.execute("SELECT Total_XP FROM UserXP WHERE User_ID = %s", (user_id,))
         xp_row = cursor.fetchone()
         user_xp = xp_row[0] if xp_row else 0
+        user_co2_saved = round(user_xp * 0.05, 2)
 
         cursor.execute("SELECT RankLevel FROM UserRankLevelTracking WHERE User_ID = %s", (user_id,))
         rank_row = cursor.fetchone()
@@ -36,6 +37,7 @@ def get_leveling_info():
 
         return jsonify({
             "userXP": user_xp,
+            "userCO2Saved": user_co2_saved,
             "rank": user_rank,
             "levelMinXP": min_xp,
             "levelMaxXP": max_xp,

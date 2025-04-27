@@ -1,7 +1,7 @@
-
 .dashboard-flex {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: stretch;
   gap: 2rem;
   flex-wrap: wrap;
 }
@@ -32,6 +32,11 @@
   background-color: #1e1e1e;
   color: #fff;
   margin-bottom: 2rem;
+  width: 300px;
+  min-height: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .card.secondary {
@@ -58,4 +63,44 @@
 
 .leaderboard-list li:last-child {
   border-bottom: none;
+}
+
+.search-input {
+  margin-right: 10px;
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.compare-results {
+  margin-top: 1rem;
+  text-align: left;
+  line-height: 1.8;
+  font-size: 1rem;
+}
+
+.compare-grid {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.compare-card {
+  background-color: #2a2a2a;
+  padding: 1rem;
+  border-radius: 8px;
+  flex: 1 1 200px;
+  min-width: 200px;
+  max-width: 300px;
+  text-align: center;
+  word-break: break-word;
+}
+
+.catchup-results {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 1rem;
 }
