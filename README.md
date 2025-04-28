@@ -1,19 +1,50 @@
-# React + TypeScript + Vite
+# MTD EcoLeveling
 
-#
+# 4/28/2025
+# OTP Setup Instructions
 
-# 4/25/2025
+This project requires a local `otp/` folder containing OpenTripPlanner files.
 
-Place the otp/ folder at the same directory level as sp25-cs411-team099-BigBallers/.
+## Download OTP bundle
 
-From inside the sp25-cs411-team099-BigBallers/ folder, run:
+🔗 [Download otp.zip](https://drive.google.com/file/d/1QnR83oJMbAyCItMtS11ObnHWzUokNCKO/view?usp=sharing)
 
+> **Note:** You must be logged into your University of Illinois Google account (`@illinois.edu`) to access the file.  
+> If you get a "No Access" error, check your login or request permission.
+
+## Setup Steps
+
+1. Download and unzip the file into the **parent directory** of the project.
+
+2. After unzipping, you should see:
+
+```
+/otp/
+  ├── graph.obj
+  ├── mtd urbana champaign.osm.pbf
+  ├── mtd.gtfs.zip
+  └── otp-2.6.0-shaded.jar
+```
+
+3. Make sure `otp/` is **at the same level** as the project folder (e.g., `sp25-cs411-team099-BigBallers/`).
+
+4. Run the project startup script:
+
+```bash
 ./start.sh
+```
 
-This will automatically:
-• Start the Flask backend (port 5001)
-• Start the React frontend (Vite dev server)
-• Start the OTP server using the files in ../otp/
+This will start the Flask backend, React frontend, and OTP server.
+
+---
+
+## Example Project Structure After Setup
+
+```
+parent-folder/
+  ├── otp/
+  └── sp25-cs411-team099-BigBallers/
+```
 
 # Jay 4/2/2025
 
