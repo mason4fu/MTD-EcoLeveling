@@ -155,7 +155,7 @@ def confirm_trip():
             """
             INSERT INTO TravelQueries
               (History_ID,Start_Lat,Start_Lon,End_Lat,End_Lon,dateTime)
-            VALUES(%s,%s,%s,%s,%s,%s,%s)
+            VALUES(%s,%s,%s,%s,%s,%s)
             """,
             (history_id,start_lat,start_lon,end_lat,end_lon,datetime_str)
         )
