@@ -154,10 +154,10 @@ def confirm_trip():
         cursor.execute(
             """
             INSERT INTO TravelQueries
-              (User_ID,History_ID,Start_Lat,Start_Lon,End_Lat,End_Lon,dateTime)
+              (History_ID,Start_Lat,Start_Lon,End_Lat,End_Lon,dateTime)
             VALUES(%s,%s,%s,%s,%s,%s,%s)
             """,
-            (user_id,history_id,start_lat,start_lon,end_lat,end_lon,datetime_str)
+            (history_id,start_lat,start_lon,end_lat,end_lon,datetime_str)
         )
         conn.commit()
         return jsonify({"message":"Trip saved successfully!"})
