@@ -24,6 +24,9 @@ function Navbar() {
       <Link to="/leveling" className="navbar-link">
         Leveling
       </Link>
+      <Link to="/transactions" className="navbar-link">
+        Transaction
+      </Link>
       <button
         onClick={handleLogout}
         className="navbar-link logout-button"

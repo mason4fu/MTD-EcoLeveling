@@ -12,6 +12,8 @@ import TripPlanner from "./TripPlanner";
 import Leveling from "./Leveling";
 import LoginPage from "./Login";
 import TravelHistory from "./TravelHistory";
+import UserStatsTable from "./Transaction";
+import Transaction from "./Transaction";
 
 function AppContent() {
   const location = useLocation();
@@ -25,6 +27,7 @@ function AppContent() {
         <Route path="/trip-planner" element={<TripPlanner />} />
         <Route path="/travel-history" element={<TravelHistory />} />
         <Route path="/leveling" element={<Leveling />} />
+        <Route path="/transactions" element={<Transaction />} />
         <Route path="/" element={<Navigate to="/login" replace />} />
       </Routes>
     </>
