@@ -15,7 +15,7 @@ def get_user_stats():
         cursor.execute("SET TRANSACTION ISOLATION LEVEL READ COMMITTED")
         conn.start_transaction()
 
-        # Advanced Query 1: Join with aggregation (no COALESCE)
+        # Advanced Query 1: Top 5 users by number of trips
         query1 = """
         SELECT 
             u.NickName,
@@ -32,11 +32,11 @@ def get_user_stats():
             total_trips DESC
         LIMIT 5;
         """
-        # Execute and fetch first query
+        # Execute and fetch first advanced query
         cursor.execute(query1)
-        user_stats = cursor.fetchall()  # [(NickName, total_trips), ...]
+        user_stats = cursor.fetchall()  
 
-        # Advanced Query 2: Join with range condition
+        # Advanced Query 2: Top 5 Bus routes based on leg counts
         query2 = """
         SELECT
             r.Route_Long_Name,
@@ -65,9 +65,9 @@ def get_user_stats():
         LIMIT
             5;
         """
-        # Execute and fetch second query
+        # Execute and fetch second advanced query
         cursor.execute(query2)
-        route_stats = cursor.fetchall()  # [(Route_Long_Name, leg_count, total_distance), ...]
+        route_stats = cursor.fetchall()  
 
         conn.commit()
         
