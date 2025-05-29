@@ -21,7 +21,6 @@ This project requires a local `otp/` folder containing OpenTripPlanner files.
 ### After Downloading:
 
 1. Download and unzip `otp.zip` into the **parent directory** of the project folder.
-   
 2. After unzipping, your folder structure should look like:
 
 ```
@@ -60,10 +59,10 @@ If you press `CTRL+C`, the script will cleanly stop all three servers.
 
 ## 4. Accessing Services
 
-| Service | URL |
-|:--------|:----|
-| Backend API | `http://localhost:5001/api/` |
-| Frontend App | `http://localhost:5173/` |
+| Service      | URL                          |
+| :----------- | :--------------------------- |
+| Backend API  | `http://localhost:5001/api/` |
+| Frontend App | `http://localhost:5173/`     |
 
 - **Backend (Flask):** Handles authentication, travel history, trip generation, and leveling API endpoints.
 - **Frontend (React + Vite):** Provides the user interface for trip planning, viewing history, and gamification features.
@@ -81,9 +80,11 @@ If you press `CTRL+C`, the script will cleanly stop all three servers.
 ## 6. Troubleshooting
 
 - **Ports already in use?**
+
   - Kill old processes or change ports in `start.sh`.
 
 - **OTP server errors?**
+
   - Ensure Java is installed (`java -version`).
   - Verify `graph.obj` exists inside `otp/`.
 
@@ -110,3 +111,32 @@ CTRL+C
 - Jay Malavia
 - Rahul Reddy
 - Allen Kaile Yuan
+
+# Project Description - MTD EcoLeveling
+
+## Project summary
+
+This application is a gamified bus trip planner built on static MTD GTFS data. Users can plan trips, track travel history, earn XP based on bus usage, and level up. The app calculates environmental impact (CO₂ saved) and displays user rankings. Key features include trip planning, CRUD operations for travel history, XP/rank auto-updates via triggers, and stored procedures for leaderboard management.
+
+## Team Information
+
+| Info     | Description           |
+| -------- | --------------------- |
+| TeamID   | Team-099              |
+| TeamName | BigBallers            |
+| Captain  | Rahul Reddy           |
+| Captain  | rahulr11@illinois.edu |
+| Member1  | Yu Fu                 |
+| Member1  | yuf7@illinois.edu     |
+| Member2  | Jay Malavia           |
+| Member2  | jmala3@illinois.edu   |
+| Member3  | Allen Kaile Yuan      |
+| Member3  | allenky2@illinois.edu |
+
+## Project Information
+
+| Info       | Description                                                         |
+| ---------- | ------------------------------------------------------------------- |
+| Title      | MTD EcoLeveling                                                     |
+| System URL | link_to_system                                                      |
+| Video Link | [link_to_video](https://mediaspace.illinois.edu/media/t/1_fpwgurkb) |
